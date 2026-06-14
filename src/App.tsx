@@ -19,6 +19,7 @@ import { Asistente } from "./views/Asistente";
 import { Nube } from "./views/Nube";
 import { Ajustes } from "./views/Ajustes";
 import { Login } from "./views/Login";
+import { HAS_CLOUD } from "./lib/config";
 
 export default function App() {
   return (
@@ -34,7 +35,12 @@ function Root() {
 
   return (
     <CloudContext.Provider value={cloud}>
-      {cloud.authStatus === "loading" ? (
+      {/* 🔓 Modo demo: si la nube/login están desactivados (config.ts sin
+          claves), mostramos la interfaz directamente con los datos de ejemplo.
+          Al activar la nube (HAS_CLOUD = true) vuelve a aparecer el login. */}
+      {!HAS_CLOUD ? (
+        <Shell />
+      ) : cloud.authStatus === "loading" ? (
         <Splash />
       ) : cloud.authStatus === "out" ? (
         <Login />
